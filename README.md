@@ -40,12 +40,20 @@ git clone https://github.com/littlexiaohui/course-design-expert.git ~/.codex/ski
 
 ## 维护
 
-维护者从已审核的编辑源同步运行文件时，可参照 [AGENTS.md](AGENTS.md)及[同步清单](sync-manifest.json)：
+本仓库是可安装的分发仓库。原维护者的编辑源位于其工作区的 `skill-sources/course-design-expert`；安装目录用于运行，本机若以符号链接指向编辑源，应先确认链接目标。其他维护者可以在自己的克隆或分叉中维护，不要把安装副本误认为原维护者的编辑源。
+
+从已审核的编辑源同步时，先确认源路径及双方未提交改动，再参照 [AGENTS.md](AGENTS.md)和[同步清单](sync-manifest.json)：
 
 ```bash
 python3 tools/sync-skill.py --source /path/to/course-design-expert
 python3 tools/sync-skill.py --source /path/to/course-design-expert --check
-git diff --stat
+git status --short --untracked-files=all
+git diff
+git diff --cached
+python3 tools/check-links.py
+uv run --no-project --with pyyaml python ~/.codex/skills/.system/skill-creator/scripts/quick_validate.py .
 ```
 
-同步脚本只复制文件，不提交或推送；新增来源和文件须先审核。
+`--check` 只比较清单文件与所选来源，不能证明来源正确或内容适合公开。链接检查只核对 Markdown 行内相对文件链接，不核对网页或章节锚点；格式检查需要本机有 Codex 的 `skill-creator` 和 `uv`。同步脚本只复制文件，不提交或推送。
+
+发布前还要检查未跟踪文件及将进入提交的完整内容和 Git 历史，确认不包含私人原件、来源映射、账号信息或许可未核的原文；新增来源和文件须先审核。对受修改影响的典型用例运行一次 Skill，记录实际读取的文件和结果；模拟不等于真实教学效果。当前任务包含或已授权发布时，再提交并推送。
