@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "skill": "course-design-expert",
+  "files": [
+    "SKILL.md",
+    "references/[课程名称]-设计方案-待审视.md.md",
+    "references/单课教学设计通用底座.md",
+    "references/单课设计-体验与销讲课.md",
+    "references/单课设计-知识与概念课.md",
+    "references/单课设计-长课与讲述编排.md",
+    "references/单课设计扩展索引.md",
+    "references/单课设计来源与证据状态.md",
+    "references/课程五要素方法摘要.md",
+    "references/课程设计框架总结（基于五要素模型）.md"
+  ],
+  "excluded": {
+    "CHANGELOG.md": "本机个人项目变更记录，不是 Skill 运行依赖",
+    "references/如何做一门课：课程五要素.md": "来源和公开许可未核的旧文章；运行入口使用操作摘要"
+  }
+}
