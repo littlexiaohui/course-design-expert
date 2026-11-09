@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check inline Markdown links to relative files, without network access."""
+"""Check simple inline relative file links; see README for the limits."""
 
 from pathlib import Path
 import re

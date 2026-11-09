@@ -54,6 +54,6 @@ python3 tools/check-links.py
 uv run --no-project --with pyyaml python ~/.codex/skills/.system/skill-creator/scripts/quick_validate.py .
 ```
 
-`--check` 只比较清单文件与所选来源，不能证明来源正确或内容适合公开。链接检查只核对 Markdown 行内相对文件链接，不核对网页或章节锚点；格式检查需要本机有 Codex 的 `skill-creator` 和 `uv`。同步脚本只复制文件，不提交或推送。
+`--check` 只比较清单文件与所选来源，不能证明来源正确或内容适合公开。链接脚本仅检查文字与路径均不含嵌套括号、且没有标题的行内相对文件链接；复杂链接需人工核查，脚本也不核对网页或章节锚点。格式检查需要本机有 Codex 的 `skill-creator` 和 `uv`。同步脚本只复制文件，不提交或推送。
 
 发布前还要检查未跟踪文件及将进入提交的完整内容和 Git 历史，确认不包含私人原件、来源映射、账号信息或许可未核的原文；新增来源和文件须先审核。对受修改影响的典型用例运行一次 Skill，记录实际读取的文件和结果；模拟不等于真实教学效果。当前任务包含或已授权发布时，再提交并推送。
