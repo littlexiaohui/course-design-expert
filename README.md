@@ -8,10 +8,10 @@
 
 > 从 `littlexiaohui/course-design-expert` 安装 Skill，仓库根目录是 Skill 路径 `.`，安装名为 `course-design-expert`。
 
-也可以在 macOS 或 Linux 终端运行安装器（要求本机已安装 Codex 和 Python 3）：
+也可以在 macOS 或 Linux 终端运行安装器（要求本机已安装 Codex 和 Python 3）。下列命令使用当前 `CODEX_HOME`；未设置时使用默认的 `~/.codex`。如果设置了 `CODEX_HOME`，请确保它是有效的非空路径：
 
 ```bash
-python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
+python3 "${CODEX_HOME:-$HOME/.codex}/skills/.system/skill-installer/scripts/install-skill-from-github.py" \
   --repo littlexiaohui/course-design-expert --path . --name course-design-expert
 ```
 
@@ -20,7 +20,7 @@ python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-githu
 另一种方式是在目标目录不存在时直接克隆（macOS 或 Linux）：
 
 ```bash
-git clone https://github.com/littlexiaohui/course-design-expert.git ~/.codex/skills/course-design-expert
+git clone https://github.com/littlexiaohui/course-design-expert.git "${CODEX_HOME:-$HOME/.codex}/skills/course-design-expert"
 ```
 
 ## 使用示例
@@ -42,22 +42,24 @@ git clone https://github.com/littlexiaohui/course-design-expert.git ~/.codex/ski
 先检查安装目录本身是否为这个仓库的克隆、`origin` 是否指向本仓库，以及是否有未提交或未跟踪的个人文件：
 
 ```bash
-git -C ~/.codex/skills/course-design-expert rev-parse --show-toplevel
-git -C ~/.codex/skills/course-design-expert remote get-url origin
-git -C ~/.codex/skills/course-design-expert status --short --untracked-files=all
+git -C "${CODEX_HOME:-$HOME/.codex}/skills/course-design-expert" rev-parse --show-toplevel
+git -C "${CODEX_HOME:-$HOME/.codex}/skills/course-design-expert" remote get-url origin
+git -C "${CODEX_HOME:-$HOME/.codex}/skills/course-design-expert" status --short --untracked-files=all
 ```
 
 确认仓库根目录就是安装目录、远端正确且没有需要保留的未提交改动后，再更新：
 
 ```bash
-git -C ~/.codex/skills/course-design-expert pull --ff-only
+git -C "${CODEX_HOME:-$HOME/.codex}/skills/course-design-expert" pull --ff-only
 ```
 
 ### 用安装器下载
 
-安装器下载的目录通常不含 Git 历史，不能直接用 `git pull`。确认它是普通目录而非符号链接后，先将原目录备份或重命名到一个**不存在的新位置**，然后重新运行上面的安装器命令。安装失败时保留备份并恢复；确认新版本可用后，再自行处理备份。
+安装器下载的目录通常不含 Git 历史，不能直接用 `git pull`。确认它是普通目录而非符号链接后，先将原目录移动到 Skill 发现目录 `skills/` **之外**、一个不存在的新备份位置，然后重新运行上面的安装器命令。不要把旧副本留在 `skills/` 内，以免新旧版本同时被发现。
 
-如果需要安装一个已确认的标签或提交，可在安装器命令后增加 `--ref` 和对应版本标识。使用 `main` 会获取当时的默认版本；更新内容与本地修改冲突时先比较，不强制覆盖。
+安装失败或新版本不可用时，先把可能残留的新目录移到 `skills/` 之外的另一个新位置，确认原安装位置已空，再把备份移回原位；不要覆盖备份或其他现有文件。确认新版本可用后，再自行处理备份。
+
+如果需要安装一个已确认的标签或提交，可在安装器命令后增加 `--ref` 和对应版本标识。使用 `main` 会获取当时的 `main` 分支版本；更新内容与本地修改冲突时先比较，不强制覆盖。
 
 ## 来源与使用许可
 
@@ -78,7 +80,7 @@ git status --short --untracked-files=all
 git diff
 git diff --cached
 python3 tools/check-links.py
-uv run --no-project --with pyyaml python ~/.codex/skills/.system/skill-creator/scripts/quick_validate.py .
+uv run --no-project --with pyyaml python "${CODEX_HOME:-$HOME/.codex}/skills/.system/skill-creator/scripts/quick_validate.py" .
 ```
 
 `--check` 只比较清单文件与所选来源，不能证明来源正确或内容适合公开。链接脚本仅检查文字与路径均不含嵌套括号、且没有标题的行内相对文件链接；复杂链接需人工核查，脚本也不核对网页或章节锚点。格式检查需要本机有 Codex 的 `skill-creator` 和 `uv`。同步脚本只复制文件，不提交或推送。
